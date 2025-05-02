@@ -1,4 +1,4 @@
-# Spotify Lyrics Visualizer
+# Screen Lyrics
 
 A floating window that displays synced lyrics for your currently playing Spotify track with animations and visual effects.
 
