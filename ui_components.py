@@ -36,7 +36,7 @@ class LyricsWindow:
         self.label = tk.Label(
             self.root,
             text="Loading...",
-            font=("Comic Sans MS", 18),
+            font=("Impact", 18),
             fg="white",
             bg="black",
             wraplength=1000,
@@ -277,7 +277,7 @@ class LyricsWindow:
             chars_to_type = len(text)
             if chars_to_type > 0:
                 self.typing_speed = int((duration * 0.8 * 1000) / chars_to_type)
-                self.typing_speed = max(10, min(200, self.typing_speed)) // 1.5
+                self.typing_speed = int(max(10, min(200, self.typing_speed)) // 1.5)
             else:
                 self.typing_speed = 50
         else:
