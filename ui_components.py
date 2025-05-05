@@ -194,8 +194,6 @@ class LyricsWindow:
 
     def change_corner(self):
         """Change the window position to a different corner"""
-        previous_corner = self.current_corner
-
         available_corners = list(self.CORNERS.keys())
         available_corners.remove(self.current_corner)
         self.current_corner = random.choice(available_corners)
@@ -224,7 +222,14 @@ class LyricsWindow:
         """Update the lyrics display based on current playback position"""
         current_line = ""
         while True:
-            position_sec = self.spotify_handler.get_current_position() / 1000.0 + 0.8
+            t = time.time()
+            try:
+                position_sec = self.spotify_handler.get_current_position() / 1000.0
+            except Exception:
+                time.sleep(0.05)
+                continue
+            time_delta = time.time() - t
+            position_sec += time_delta
             line_changed = False
             current_line_index = -1
 
@@ -286,14 +291,18 @@ class LyricsWindow:
         self.type_next_char()
 
         if random.random() < 0.2:
-            new_corner = self.change_corner()
+            self.change_corner()
 
         self.start_shake()
 
     def update_song(self):
         """Monitor for song changes and update lyrics"""
         while True:
-            song, artist = self.spotify_handler.get_current_song()
+            try:
+                song, artist = self.spotify_handler.get_current_song()
+            except Exception:
+                time.sleep(2)
+                continue
             if (
                 song != self.current_song or artist != self.current_artist
             ) and song is not None:
