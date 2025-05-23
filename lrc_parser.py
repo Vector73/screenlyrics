@@ -23,7 +23,7 @@ def get_lyrics(song, artist):
     """
     Search for synced lyrics for a song
     """
-    lyrics = synced_search(f"{song} {artist}")
+    lyrics = synced_search(f"'{song}' {artist}")
     if lyrics:
         return parse_lrc(lyrics)
     return []

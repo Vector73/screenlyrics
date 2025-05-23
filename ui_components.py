@@ -7,16 +7,18 @@ from color_utils import Color
 
 
 class LyricsWindow:
-    def __init__(self, spotify_handler, lyrics_parser):
+    def __init__(self, spotify_handler, lyrics_parser, hop_chance=0.2):
         """
         Initialize the floating lyrics window
 
         Args:
             spotify_handler: Instance of SpotifyHandler
             lyrics_parser: Function to get and parse lyrics
+            hop_chance: Probability of lyrics to hop to another position on screen
         """
         self.spotify_handler = spotify_handler
         self.lyrics_parser = lyrics_parser
+        self.hop_chance = hop_chance
 
         # Initialize window
         self.root = tk.Tk()
@@ -28,9 +30,7 @@ class LyricsWindow:
         # Get screen dimensions
         self.screen_width = self.root.winfo_screenwidth()
         self.screen_height = self.root.winfo_screenheight()
-        self.root.geometry(
-            f"600x60+{self.screen_width - 1300}+{self.screen_height - 100}"
-        )
+        self.root.geometry(f"100x60+0+0")
 
         # Create label for lyrics
         self.label = tk.Label(
@@ -260,7 +260,8 @@ class LyricsWindow:
                     )
 
                 self.root.after(
-                    0, lambda text=current_line, dur=duration: self.update_ui(text, dur)
+                    1000,
+                    lambda text=current_line, dur=duration: self.update_ui(text, dur),
                 )
 
             time.sleep(0.05)
@@ -290,7 +291,7 @@ class LyricsWindow:
 
         self.type_next_char()
 
-        if random.random() < 0.2:
+        if random.random() < self.hop_chance:
             self.change_corner()
 
         self.start_shake()
